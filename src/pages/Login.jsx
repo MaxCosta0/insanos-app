@@ -1,17 +1,50 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import LoginForm from '../components/LoginForm'
 import LoginImage from '../components/LoginImage'
 import MobileLogo from '../components/MobileLogo'
 import './Login.css'
 
+// Logger estruturado
+const logger = {
+  info: (message, data = {}) => console.log(`[LOGIN-PAGE] ${message}`, data),
+  error: (message, data = {}) => console.error(`[LOGIN-PAGE] ${message}`, data),
+  warn: (message, data = {}) => console.warn(`[LOGIN-PAGE] ${message}`, data),
+};
+
 function Login() {
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [keepLoggedIn, setKeepLoggedIn] = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e) => {
+  const { login } = useAuth()
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Login:', { email, password, keepLoggedIn })
+    logger.info('Formulário de login submetido', { username })
+    
+    setError('')
+    setLoading(true)
+
+    try {
+      await login(username, password)
+      logger.info('Login bem-sucedido, redirecionando para home', { username })
+      navigate('/')
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'Erro ao fazer login. Verifique suas credenciais.'
+      logger.error('Falha no login', { 
+        username, 
+        error: errorMessage,
+        status: err.response?.status 
+      })
+      setError(errorMessage)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -26,13 +59,15 @@ function Login() {
             <p className="login-subtitle">Faça login na sua conta em segundos</p>
             
             <LoginForm
-              email={email}
+              username={username}
               password={password}
               keepLoggedIn={keepLoggedIn}
-              onEmailChange={setEmail}
+              onUsernameChange={setUsername}
               onPasswordChange={setPassword}
               onKeepLoggedInChange={setKeepLoggedIn}
               onSubmit={handleSubmit}
+              loading={loading}
+              error={error}
             />
           </div>
         </div>

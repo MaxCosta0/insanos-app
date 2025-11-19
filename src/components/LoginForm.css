@@ -41,6 +41,46 @@
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  padding-right: 50px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+  outline: none;
+}
+
+.toggle-password:hover {
+  color: #8b5cf6;
+}
+
+.toggle-password:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toggle-password svg {
+  width: 20px;
+  height: 20px;
+}
+
 .form-options {
   display: flex;
   justify-content: space-between;
@@ -83,6 +123,16 @@
   text-decoration: underline;
 }
 
+.error-message {
+  padding: 12px 16px;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  color: #f87171;
+  font-size: 14px;
+  text-align: center;
+}
+
 .login-button {
   width: 100%;
   padding: 16px;
@@ -107,6 +157,22 @@
 
 .login-button:active {
   transform: translateY(0);
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.checkbox-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 640px) {
